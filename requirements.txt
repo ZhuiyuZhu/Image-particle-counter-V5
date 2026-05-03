@@ -1,0 +1,11 @@
+streamlit>=1.30
+opencv-python-headless
+scikit-image
+scipy
+pandas
+pillow
+numpy
+matplotlib
+segment-anything
+torch
+torchvision
