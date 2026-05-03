@@ -37,7 +37,7 @@ SUPPORTED_FORMATS = ('.png', '.jpg', '.jpeg', '.tif', '.tiff', '.bmp', '.gif')
 MAX_IMAGE_SIZE = 2048
 SAM_CHECKPOINT_NAME = "sam_vit_b_01ec64.pth"
 SAM_CACHE_DIR = os.path.expanduser("~/.cache/segment_anything")
-SAM_CHECKPOINT_PATH = os.path.join(SAM_CACHE_DIR, SAM_CHECKPOINT_NAME)
+SAM_CHECKPOINT_PATH = "sam_vit_b_01ec64.pth"
 
 ALGO_INFO = {
     'log': {'name': 'LoG 斑点检测', 'has_radius': True},
