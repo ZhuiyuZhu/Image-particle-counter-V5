@@ -3,8 +3,6 @@
 新增：SAM AI 分割精修（可选）+ 优劣势说明面板
 模块：荧光颗粒计数 / 油红O脂滴 / ALP矿化 / 茜素红矿化
 """
-
-import streamlit as st
 import cv2
 import numpy as np
 from scipy import ndimage
@@ -16,6 +14,26 @@ import gc
 import os
 from datetime import datetime
 import matplotlib.pyplot as plt
+import urllib.request
+import streamlit as st
+
+SAM_CHECKPOINT_PATH = "sam_vit_b_01ec64.pth"  # 放在当前目录
+SAM_DOWNLOAD_URL = "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth"
+
+def ensure_sam_model():
+    if not SAM_AVAILABLE:
+        return False, "SAM 库未安装"
+    
+    # 如果当前目录没有，自动下载
+    if not os.path.exists(SAM_CHECKPOINT_PATH):
+        with st.spinner("⏳ 首次运行：下载 SAM 模型 (375MB)，约需 1-3 分钟..."):
+            try:
+                urllib.request.urlretrieve(SAM_DOWNLOAD_URL, SAM_CHECKPOINT_PATH)
+                st.success("SAM 模型下载完成")
+            except Exception as e:
+                return False, f"下载失败: {str(e)}"
+    
+    return True, "就绪"
 
 # ==================== 页面配置 ====================
 st.set_page_config(
@@ -37,7 +55,7 @@ SUPPORTED_FORMATS = ('.png', '.jpg', '.jpeg', '.tif', '.tiff', '.bmp', '.gif')
 MAX_IMAGE_SIZE = 2048
 SAM_CHECKPOINT_NAME = "sam_vit_b_01ec64.pth"
 SAM_CACHE_DIR = os.path.expanduser("~/.cache/segment_anything")
-SAM_CHECKPOINT_PATH = "sam_vit_b_01ec64.pth"
+SAM_CHECKPOINT_PATH = "sam_vit_b_01ec64.pth" if os.path.exists("sam_vit_b_01ec64.pth") else os.path.join(SAM_CACHE_DIR, SAM_CHECKPOINT_NAME)
 
 ALGO_INFO = {
     'log': {'name': 'LoG 斑点检测', 'has_radius': True},
